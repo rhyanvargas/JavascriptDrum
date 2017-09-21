@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Drumkit app</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+  <h1>Hello Drummer.<br>Press keys A-K to Play</h1>
+    <div class="keys">
+      <div class="key" data-key='65'>Boom (A)</div>
+      <div class="key" data-key='83'>Kick (S)</div>
+      <div class="key" data-key='68'>hihat (D)</div>
+      <div class="key" data-key='70'>Clap (F)</div>
+      <div class="key" data-key='71'>OpenHat (G)</div>
+      <div class="key" data-key='72'>BellPad (H)</div>
+      <div class="key" data-key='74'>Snare (J)</div>
+      <div class="key" data-key='75'>Chord (K)</div>
+    </div>
+
+    <audio data-key='65' src="sounds/Boom.wav"></audio>
+    <audio data-key='83' src="sounds/kick.wav"></audio>
+    <audio data-key='68' src="sounds/hihat.wav"></audio>
+    <audio data-key='70' src="sounds/clap.wav"></audio>
+    <audio data-key='71' src="sounds/openhat.wav"></audio>
+    <audio data-key='72' src="sounds/BellPad.wav"></audio>
+    <audio data-key='74' src="sounds/snare.wav"></audio>
+    <audio data-key='75' src="sounds/Chord.wav"></audio>
+
+  <script>
+
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    if(!audio) return // if a key is pressed that is not mapped,stop the function from running
+    audio.currentTime = 0 // rewind to start  
+    // animate key
+    key.classList.add('playing');
+    audio.play();
+  }
+  
+  function removeTransition(e) {
+   if(e.propertyName !== 'transform') return // skip it if it's not a transform
+   this.classList.remove('playing');
+  }
+
+  const keys = document.querySelectorAll('.key');
+
+  // Listen to animation end of event
+  keys.forEach( key => key.addEventListener('transitionend', removeTransition));
+
+  // Act on Key Press
+  window.addEventListener('keydown', playSound);
+ 
+  </script>
+  </body>
+</html>
